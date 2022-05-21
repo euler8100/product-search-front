@@ -249,7 +249,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "Header",
+  name: "HeaderView",
   components: {},
   data() {
     return {

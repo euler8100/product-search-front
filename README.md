@@ -1,4 +1,4 @@
-# chipdeals
+# product-search-front
 
 ## Project setup
 ```

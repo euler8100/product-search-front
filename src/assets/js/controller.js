@@ -1,4 +1,4 @@
-const { sendMail } = require("./use-cases/sendMail.js");
+const { sendMail } = require('./use-cases/sendMail.js');
 
 class Controller {
   static sendMail(firstName, lastName, reason, email, message) {

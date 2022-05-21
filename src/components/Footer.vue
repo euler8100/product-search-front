@@ -55,7 +55,7 @@
 
 <script>
 export default {
-  name: "Footer",
+  name: "FooterView",
   data() {
     return {
       navSections: [
