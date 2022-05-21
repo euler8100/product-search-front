@@ -1,0 +1,19 @@
+{
+  "lang": "English",
+  "header": {
+    "pricing": "Prix",
+    "pricingList": {
+      "item1": "Premier item prix"
+    },
+    "product": "Produits",
+    "developersList": {
+      "item1": "Premier item dev"
+    },
+    "developer": "Dévelopeurs",
+    "company": "Entreprise",
+    "companyList": {
+      "item1": "1er item entreprise"
+    },
+    "getFree": "DÉMMAREZ NOS API GRATUITEMENT"
+  }
+}
