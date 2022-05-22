@@ -52,11 +52,13 @@ export default {
       this.$router.push("/products?search=" + searchQuery);
     },
     async getPosition() {
-      window.alert(
-        "Veuillez nous envoyer votre localisation pour permettre la recheche"
-      );
+      this.notify({
+        text: "Veuillez nous envoyer votre localisation pour permettre la recheche",
+        duration: 3000,
+        progress: false,
+      });
       await new Promise((resolve) => {
-        setTimeout(resolve, 3000);
+        setTimeout(resolve, 2000);
       });
       return new Promise((resolve) => {
         navigator.geolocation.getCurrentPosition(
@@ -65,9 +67,13 @@ export default {
           },
           (error) => {
             console.log(error);
-            window.alert(
-              "Désolé, nous n'arrivons pas à accéder à votre position, veuilez réessayer si vous pensez que c'est une erreur"
-            );
+
+            this.notify({
+              text: "Désolé, nous n'arrivons pas à accéder à votre position, veuilez réessayer si vous pensez que c'est une erreur",
+              duration: 3000,
+              progress: false,
+              type: "WARNING",
+            });
           },
           { enableHighAccuracy: true }
         );

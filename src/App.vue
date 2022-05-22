@@ -1,22 +1,25 @@
 <template>
-    <div class="mobileView p-0 mx-auto">
-      <Header />
-      <div style="min-height:50vh">
-        <router-view />
-      </div>
-      <Footer />
+<AnimatedBg style="z-index:0"/>
+  <div class="mobileView position-relative p-0 mx-auto">
+    <Header />
+    <div style="min-height: 50vh">
+      <router-view />
     </div>
+    <Footer />
+  </div>
 </template>
 
 <script>
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
+import AnimatedBg from "./components/AnimatedBg.vue";
 
 export default {
   name: "App",
   components: {
     Header,
     Footer,
+    AnimatedBg
   },
 };
 </script>
@@ -43,36 +46,31 @@ export default {
 }
 
 :root {
+  --blue-dark-6: hsl(210, 77%, 5%);
+  --blue-dark-5: hsl(211, 68%, 12%);
+  --blue-dark-4: hsl(211, 66%, 20%);
+  --blue-dark-3: hsl(211, 65%, 27%);
+  --blue-dark-2: hsl(211, 64%, 34%);
+  --blue-dark-2: hsl(211, 64%, 41%);
+  --blue-dark-1: hsl(211, 64%, 49%);
+  --blue-normal: #318ce7;
+  --blue-white-1: #4b9bea;
+  --blue-white-2: #65aaed;
+  --blue-white-3: #7fb9f0;
+  --blue-white-4: #99c8f3;
+  --blue-white-5: #b3d7f6;
+  --blue-white-6: #cde6f9;
+  --blue-white-7: #e8f2fc;
 
---blue-dark-6: hsl(210, 77%, 5%);
---blue-dark-5: hsl(211, 68%, 12%);
---blue-dark-4: hsl(211, 66%, 20%);
---blue-dark-3: hsl(211, 65%, 27%);
---blue-dark-2: hsl(211, 64%, 34%);
---blue-dark-2: hsl(211, 64%, 41%);
---blue-dark-1: hsl(211, 64%, 49%);
---blue-normal: #318CE7;
---blue-white-1: #4B9BEA;
---blue-white-2: #65AAED;
---blue-white-3: #7FB9F0;
---blue-white-4: #99C8F3;
---blue-white-5: #B3D7F6;
---blue-white-6: #CDE6F9;
---blue-white-7: #E8F2FC;
+  --blue-gray-7: #a1a1a5;
+  --blue-gray-6: #89929e;
+  --blue-gray-5: #718397;
+  --blue-gray-4: #597490;
+  --blue-gray-3: #416589;
+  --blue-gray-2: #295682;
+  --blue-gray-1: #0e457b;
 
-
---blue-gray-7: #A1A1A5;
---blue-gray-6: #89929E;
---blue-gray-5: #718397;
---blue-gray-4: #597490;
---blue-gray-3: #416589;
---blue-gray-2: #295682;
---blue-gray-1: #0E457B;
-
-
-
---white: white
-
+  --white: white;
 }
 
 html,
@@ -84,41 +82,40 @@ body {
   font-weight: 500 !important;
   color: var(--blue-dark-4) !important;
   background-color: var(--white) !important;
-  }
-
-  .mobileView {
-    max-width: 550px;
-  }
-
-
-.section{
-  padding-top:100px;
-  padding-bottom:100px;
 }
 
-.title{
-  font-family:  "circular-bold";
+.mobileView {
+  max-width: 450px;
+}
+
+.section {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.title {
+  font-family: "circular-bold";
   font-weight: 900;
   color: var(--color16) !important;
 }
 
-.color-white{
+.color-white {
   color: var(--color16) !important;
 }
 
-.bold{
-  font-family:  "circular-bold";
+.bold {
+  font-family: "circular-bold";
 }
 
 a {
-  color: var(--color14)!important;
-  text-decoration: none!important;
+  color: var(--color14) !important;
+  text-decoration: none !important;
 }
-a:hover{
-  color: var(--color16)!important;
+a:hover {
+  color: var(--color16) !important;
 }
 a.active {
-  color: var(--color16)!important;
+  color: var(--color16) !important;
 }
 
 .whiteBtn:hover {
@@ -133,7 +130,7 @@ a.active {
 
 .zoomHover {
   cursor: pointer !important;
-  transition-duration:100ms;
+  transition-duration: 100ms;
 }
 .zoomHover:hover {
   transform: scale(1.03);
@@ -148,13 +145,12 @@ a.active {
   transform: skewY(3deg);
 }
 
-
 .specialCardForm {
   background-color: var(--color8);
   border: 1px solid var(--color4);
   box-shadow: var(--color4) 0 0 0 1px, var(--color4) 0 2px 8px 1px;
   border-radius: 4px;
-  transition-duration:100ms;
+  transition-duration: 100ms;
 }
 .specialCardForm:hover {
   background-color: var(--color4);
@@ -170,8 +166,12 @@ a.active {
   background-color: var(--blue1) !important;
 }
 
-.color-highlight{
-  color: var(--blue6)
+.color-highlight {
+  color: var(--blue6);
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 .ctaBtn {
@@ -181,34 +181,29 @@ a.active {
   position: relative;
   display: inline-block;
   padding: 0.75rem 1.25rem 0.95rem;
-  background-color: var(--blue6);
-  border-radius: 6px;
-  color: var(--color15) !important;
+  background-color: var(--blue-normal);
+  border-radius: 20px;
+  color: var(--blue-white-7) !important;
   font-size: 1rem;
   line-height: 1.125rem;
-  box-shadow: 5px 5px 0 var(--blue4);
+  box-shadow: 0px 4px 0 var(--blue-dark-4);
   text-decoration: none;
   border-width: 2px;
-  border-color: var(--blue6);
+  border-color: var(--blue-dark-1);
   border-style: solid;
   cursor: pointer;
-  font-family:  "circular-bold";
+  font-family: "circular-bold";
   text-transform: uppercase;
 }
-.ctaBtn.ctaBtnDarkp {
-  background-color: var(--color6);
-  border-color: var(--color6);
-}
 .ctaBtn:hover {
-  top: 5px;
-  left: 4px;
-  box-shadow: 0 0 0 var(--blue4);
-  background-color: var(--blue4);
-  border-color: var(--blue4);
-  color: var(--color15) !important;
+  top: 4px;
+  left: 0px;
+  box-shadow: 0 0 0 var(--blue-dark-4);
+  background-color: var(--blue-dark-4);
+  border-color: var(--blue-dark-4);
+  color: var(--blue-white-7) !important;
   text-decoration: none;
 }
-
 
 img.shime {
   background-image: linear-gradient(

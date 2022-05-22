@@ -73,7 +73,7 @@ body{
     list-style: none;
     width: 20px;
     height: 20px;
-    background: var(--gray8);
+    background: var(--blue-normal);
     animation: animate 25s linear infinite;
     bottom: -150px;
     

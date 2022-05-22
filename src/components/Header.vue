@@ -24,95 +24,20 @@
             />
           </form>
           <div></div>
-          <div></div>
+          <div class="pointer" @click="showMobileNavPanel = true">
+            <span
+              class="material-icons material-icons-outlined notranslate"
+              style="position:relative;top:5px: font-size:32px"
+            >
+              menu
+            </span>
+          </div>
         </div>
       </nav>
     </header>
   </div>
 
-  <div
-    class="desktopNavHoverDetails"
-    :class="{ visible: detailNavHovered || navHoverDetailsHovered }"
-    :style="{ left: hoveredNavArrowLeftPosition + 'px' }"
-    @mouseleave="navHoverDetailsHovered = false"
-    @mouseover="navHoverDetailsHovered = true"
-    v-if="navItemHovered.navSection"
-  >
-    <div
-      class="hoveredNavArrow"
-      :style="{ leftt: hoveredNavArrowLeftPosition + 'px' }"
-    ></div>
-    <div
-      class="hoverDetailsBody p-3"
-      :class="'hoverDetails_' + navItemHovered.navSection.key"
-    >
-      <div
-        class="hoverDetailItem row"
-        v-for="(navDetailItem, navDetailItemIndex) in navItemHovered.navSection
-          .items"
-        :key="navDetailItemIndex"
-      >
-        <a
-          v-if="/http/.test(navDetailItem.path)"
-          :href="navDetailItem.path"
-          class="col-12 row"
-        >
-          <div class="navDetailItemIcon w-auto">
-            <img
-              :src="'/images/' + navDetailItem.icon"
-              v-if="navDetailItem.icon"
-            />
-            <span v-else class="material-icons-outlined">{{
-              navDetailItem.iconName
-            }}</span>
-          </div>
-          <div class="navDetailItemTexts col my-auto">
-            <div class="navDetailItemTitle">
-              {{ navDetailItem.title }}
-            </div>
-            <div class="navDetailItemDescription">
-              {{ navDetailItem.description }}
-            </div>
-          </div>
-        </a>
-        <router-link
-          v-else
-          :to="navDetailItem.path"
-          class="col-12 row"
-          active-class="active bold"
-        >
-          <div class="navDetailItemIcon w-auto">
-            <img
-              :src="'/images/' + navDetailItem.icon"
-              v-if="navDetailItem.icon"
-            />
-            <span v-else class="material-icons-outlined">{{
-              navDetailItem.iconName
-            }}</span>
-          </div>
-          <div class="navDetailItemTexts col my-auto">
-            <div class="navDetailItemTitle">
-              {{ navDetailItem.title }}
-            </div>
-            <div class="navDetailItemDescription">
-              {{ navDetailItem.description }}
-            </div>
-          </div>
-        </router-link>
-        <div
-          class="m y-1 col-10 ms-auto"
-          v-if="navItemHovered.navSection.items[navDetailItemIndex + 1]"
-        >
-          <hr />
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div
-    class="mobileNavPanel d-flex d-lg-none"
-    :class="{ visible: showMobileNavPanel }"
-  >
+  <div class="mobileNavPanel d-flex" :class="{ visible: showMobileNavPanel }">
     <div class="overlay" @click="showMobileNavPanel = false"></div>
     <div class="navsContainer col-11 col-sm-10 col-md-8 m-auto p-4">
       <div
@@ -189,25 +114,6 @@
             </li>
           </div>
         </li>
-        <li class="nav-item d-block">
-          <div>
-            <router-link
-              to="/pricing"
-              active-class="active bold"
-              class="d-flex"
-              @click="showMobileNavPanel = false"
-            >
-              <div
-                class="navDetailItemIcon d-flex w-auto me-2 h-auto align-top"
-              >
-                <span class="material-icons-outlined"> sell </span>
-              </div>
-              <div class="navDetailItemTexts col my-auto align-bottom">
-                <div class="navDetailItemTitle">Pricing</div>
-              </div>
-            </router-link>
-          </div>
-        </li>
       </ul>
     </div>
   </div>
@@ -229,13 +135,90 @@ export default defineComponent({
       hoveredNavArrowLeftPosition: 0,
       showMobileNavPanel: false,
       showSearchBar: false,
-      searchedText:""
+      searchedText: "",
+      navAreVisible: false,
+
+      navSections: [
+        // {
+        //   key: "products",
+        //   name: "Products",
+        //   items: [
+        //     {
+        //       key: "smallkash",
+        //       title: "SmallKash",
+        //       icon: "smallkashLogo.svg",
+        //       description: "P2P Transfer App",
+        //       path: "https://smallkash.chipdeals.me",
+        //     },
+        //   ],
+        // },
+        {
+          key: "search",
+          name: "Monster Search",
+          items: [
+            {
+              key: "",
+              title: "Rechercher",
+              iconName: "groups",
+              description: "",
+              path: "/",
+            },
+          ],
+        },
+        {
+          key: "user",
+          name: "Utilisateur",
+          items: [
+            {
+              key: "",
+              title: "Inscription",
+              iconName: "groups",
+              description: "",
+              path: "/signup",
+            },
+            {
+              key: "",
+              title: "Connection",
+              iconName: "contact_page",
+              description: "",
+              path: "/login",
+            },
+          ],
+        },
+        {
+          key: "shop",
+          name: "Ma Boutique",
+          items: [
+            {
+              key: "",
+              title: "+ Boutique",
+              iconName: "groups",
+              description: "",
+              path: "/shop?new=true",
+            },
+            {
+              key: "",
+              title: "+ Produit",
+              iconName: "groups",
+              description: "",
+              path: "/product?new=1",
+            },
+            {
+              key: "",
+              title: "Ma Boutique",
+              iconName: "contact_page",
+              description: "",
+              path: "/shop",
+            },
+          ],
+        },
+      ],
     };
   },
   mounted() {
     const params = new Proxy(new URLSearchParams(window.location.search), {
-  get: (searchParams, prop) => searchParams.get(prop),
-});
+      get: (searchParams, prop) => searchParams.get(prop),
+    });
 
     this.searchedText = params.search || "";
     window.addEventListener("scroll", () => {
@@ -416,70 +399,60 @@ li {
 .navDetailItemDescription {
   font-size: 12px;
 }
-@media screen and (max-width: 992px) {
-  .closeBtn {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    color: var(--color11);
-    color: var(--color10);
-  }
-  .mobileNavPanel .nav-item > * {
-    line-height: 35px;
-    padding: 0 0 0 0;
-    text-decoration: none;
-    font-size: 12.1px;
-  }
-  .nav-title {
-    color: var(--color11);
-    color: var(--color10);
-  }
-  .navDetailItemTitle {
-    font-size: 12.1px;
-  }
-  .mobileNavPanel {
-    opacity: 0;
-    transition-duration: 0.3s;
-    pointer-events: none;
-    position: fixed;
-    right: 0px;
-    z-index: 2000;
-    height: 100vh;
-    width: 100vw;
-    top: 0px;
-  }
-  .mobileNavPanel a {
-    color: var(--color4) !important;
-  }
+.closeBtn {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  color: var(--blue-gray-7);
+}
+.mobileNavPanel .nav-item > * {
+  line-height: 35px;
+  padding: 0 0 0 0;
+  text-decoration: none;
+  font-size: 13px;
+}
+.nav-title {
+  color: var(--blue-gray-7);
+}
+.navDetailItemTitle {
+  font-size: 13px;
+}
+.mobileNavPanel {
+  opacity: 0;
+  transition-duration: 0.3s;
+  pointer-events: none;
+  position: fixed;
+  right: 0px;
+  z-index: 2000;
+  height: 100vh;
+  width: 100vw;
+  top: 0px;
+}
+.mobileNavPanel.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.navsContainer {
+  background-color: var(--white);
+  box-shadow: 0px 0 2px 0 var(--blue-dark-5);
 
-  .mobileNavPanel.visible {
-    opacity: 1;
-    pointer-events: auto;
-  }
-  .navsContainer {
-    background-color: var(--color6);
-    box-shadow: 0px 0 8px 0 var(--color4);
-
-    background-color: #717c8a33 !important;
-    background-color: var(--color15) !important;
-    backdrop-filter: blur(10px);
-    overflow: auto;
-    height: 85%;
-    border-radius: 20px;
-    position: relative;
-  }
-  .overlay {
-    display: none;
-    width: calc(100%);
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1;
-  }
-  .mobileNavPanel.visible .overlay {
-    display: inline-block;
-  }
+  overflow: auto;
+  height: 85%;
+  border-radius: 20px;
+  position: relative;
+  max-width: 500px
+}
+.overlay {
+  display: none;
+  width: calc(100%);
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+.mobileNavPanel.visible .overlay {
+  display: inline-block;
 }
 
 .nbProduct {
@@ -488,7 +461,7 @@ li {
 
 .bar {
   margin: 0 auto;
-  width: 80%;
+  width: 60%;
   position: relative;
   border-radius: 30px;
   border: 1px solid #dcdcdc;

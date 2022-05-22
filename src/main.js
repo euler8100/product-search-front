@@ -5,6 +5,7 @@ import 'bootstrap';
 import router from './router';
 import './registerServiceWorker';
 import search from "./plugins/search/config";
+import toaststrap from "./plugins/toaststrap/config";
 
 const { Commons } = require('./assets/js/utils/commons');
 // const { AnalyticsUtils } = require('./assets/js/utils/analyticsUtils');
@@ -27,5 +28,6 @@ app.config.globalProperties.$SetProductToShow = (product) => {
 
 app.use(router);
 app.use(search);
+app.use(toaststrap);
 
 app.mount('#app');

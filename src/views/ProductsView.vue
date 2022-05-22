@@ -137,9 +137,12 @@ export default {
           },
           (error) => {
             console.log(error);
-            window.alert(
-              "Désolé, nous n'arrivons pas à accéder à votre position, veuilez réessayer si vous pensez que c'est une erreur"
-            );
+            this.notify({
+              text: "Désolé, nous n'arrivons pas à accéder à votre position, veuilez réessayer si vous pensez que c'est une erreur",
+              duration: 3000,
+              progress: false,
+              type: "WARNING",
+            });
           },
           { enableHighAccuracy: true }
         );

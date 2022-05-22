@@ -6,7 +6,7 @@ export default {
         text: `Euler bro`,
         progress: true,
         type: "INFO",
-        duration: 30000,
+        duration: 3000,
         position: "TOP_CENTER",
         title: "",
         pausable: false
