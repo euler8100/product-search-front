@@ -1,13 +1,11 @@
 <template>
-  <n-message-provider>
-    <div class="container-fluid p-0">
+    <div class="mobileView p-0 mx-auto">
       <Header />
       <div style="min-height:50vh">
         <router-view />
       </div>
       <Footer />
     </div>
-  </n-message-provider>
 </template>
 
 <script>
@@ -45,45 +43,35 @@ export default {
 }
 
 :root {
- /* --color1: #090C10;
-  --color2: #10141B;
-  --color3: #171C26;
-  --color4: #1E2431;
-  --color5: #232D3D;
-  --color6: #565E6B;
-  --color7: #898F99;
-  --color8: #BCC0C7;
-  --color9: #EFF1F6;*/
 
---color1: #090C10;
---color2: #0E1319;
---color3: #131A22;
---color4: #18212B;
---color5: #1D2834;
---color6: #232D3D;
---color7: #2D3947;
---color8: #334054;
---color9: #525E6F;
---color10: #717C8A;
---color11: #909AA5;
---color12: #AFB8C0;
---color13: hsl(217deg 20% 80%);
---color14: hsl(200deg 15% 85%) ;
---color15: hsl(180deg 20% 90%);
---color16: hsl(170deg 30% 95%);
---color17: white;
+--blue-dark-6: hsl(210, 77%, 5%);
+--blue-dark-5: hsl(211, 68%, 12%);
+--blue-dark-4: hsl(211, 66%, 20%);
+--blue-dark-3: hsl(211, 65%, 27%);
+--blue-dark-2: hsl(211, 64%, 34%);
+--blue-dark-2: hsl(211, 64%, 41%);
+--blue-dark-1: hsl(211, 64%, 49%);
+--blue-normal: #318CE7;
+--blue-white-1: #4B9BEA;
+--blue-white-2: #65AAED;
+--blue-white-3: #7FB9F0;
+--blue-white-4: #99C8F3;
+--blue-white-5: #B3D7F6;
+--blue-white-6: #CDE6F9;
+--blue-white-7: #E8F2FC;
 
---blue1: #031316;
---blue2: #09343C;
---blue3: #0F5562;
---blue4: #157688;
---blue5: #1B97AE;
---blue6: #1FBAD6;
---blue7: #47C7DE;
---blue8: #6FD4E6;
---blue9: #97E1EE;
---blue10: #BFEEF6;
---blue11: #E9F9FC;
+
+--blue-gray-7: #A1A1A5;
+--blue-gray-6: #89929E;
+--blue-gray-5: #718397;
+--blue-gray-4: #597490;
+--blue-gray-3: #416589;
+--blue-gray-2: #295682;
+--blue-gray-1: #0E457B;
+
+
+
+--white: white
 
 }
 
@@ -94,9 +82,13 @@ body {
   font-family: "circular-normal", "Work Sans" !important;
   font-size: 16px !important;
   font-weight: 500 !important;
-  color: var(--color14) !important;
-  background-color: var(--color6) !important;
-}
+  color: var(--blue-dark-4) !important;
+  background-color: var(--white) !important;
+  }
+
+  .mobileView {
+    max-width: 550px;
+  }
 
 
 .section{
@@ -218,7 +210,7 @@ a.active {
 }
 
 
-img {
+img.shime {
   background-image: linear-gradient(
     to right,
     #ebebeb calc(50% - 100px),

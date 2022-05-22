@@ -1,73 +1,34 @@
 <template>
   <div class="headerSpace"></div>
-  <header
-    class="header"
-    :class="{
-      hidden: documentScrolledUp && scrollY > 80,
-      'position-fixed bg-glass': scrollY > 180,
-      'd-none': scrollY > 80 && scrollY < 180,
-      'position-absolute ': scrollY <= 80,
-    }"
-  >
-    <nav class="navbar navbar-expand-lg w-100">
-      <div class="container-lg">
-        <router-link
-          to="/"
-          class="navbar-brand logo zoomHover d-flex"
-          active-class="active"
-          ><img src="../../public/icon_chipdeal.png" class="my-auto me-2" />
-          <span class="my-auto d-inline-block"> Chipdeals</span>
-        </router-link>
-        <span @click="showMobileNavPanel = true" class="d-lg-none">
-          <span
-            class="material-icons material-icons-outlined notranslate text-white"
-            style="position:relative;top:5px: font-size:32px "
-          >
-            menu
-          </span>
-        </span>
-        <div class="d-none d-lg-block">
-          <div class="">
-            <ul
-              class="navbar-nav d-inline-block"
-              @mouseleave="detailNavHovered = false"
-              @mouseover="detailNavHovered = true"
+  <div class="position-fixed fixed-top">
+    <header class="header bg-glass mobileView mx-auto">
+      <nav class="navbar navbar-expand-lg w-100">
+        <div class="container-lg">
+          <router-link
+            to="/"
+            class="navbar-brand logo d-flex"
+            active-class="active"
+            ><img src="/logo.png" class="my-auto me-2" />
+            <span class="my-auto d-inline-block" v-if="!showSearchBar">
+              Monster Search</span
             >
-              <li
-                class="nav-item normalCursor"
-                v-for="(navSection, index) in navSections"
-                :key="index"
-                :id="'desktopNav_' + index"
-                @mouseover="navItemHovered = { navSection, index }"
-              >
-                <span> {{ navSection.name }} </span>
-              </li>
-            </ul>
-            <ul class="navbar-nav d-inline-block">
-              <li class="nav-item">
-                <div>
-                  <router-link to="/pricing" active-class="active bold">
-                    Pricing
-                  </router-link>
-                </div>
-              </li>
-              <li class="nav-item" v-if="false">
-                <div>
-                  <router-link
-                    to="#"
-                    class="btn btn-sm btn-outline-light whiteBtn zoomHover"
-                    active-class="active bold"
-                  >
-                    {{ $t("header.getFree") }}</router-link
-                  >
-                </div>
-              </li>
-            </ul>
-          </div>
+          </router-link>
+          <form class="bar" @submit.prevent="search" v-if="showSearchBar">
+            <input
+              class="searchbar"
+              type="search"
+              title="Search"
+              placeholder="Monster Search"
+              spellcheck="true"
+              v-model="searchedText"
+            />
+          </form>
+          <div></div>
+          <div></div>
         </div>
-      </div>
-    </nav>
-  </header>
+      </nav>
+    </header>
+  </div>
 
   <div
     class="desktopNavHoverDetails"
@@ -204,7 +165,14 @@
                   @click="showMobileNavPanel = false"
                 >
                   <div
-                    class="navDetailItemIcon d-flex w-auto me-1 h-auto align-top"
+                    class="
+                      navDetailItemIcon
+                      d-flex
+                      w-auto
+                      me-1
+                      h-auto
+                      align-top
+                    "
                   >
                     <img :src="'/images/' + navItem.icon" v-if="navItem.icon" />
                     <span v-else class="material-icons-outlined">{{
@@ -253,93 +221,6 @@ export default defineComponent({
   components: {},
   data() {
     return {
-      navSections: [
-        {
-          key: "products",
-          name: "Products",
-          items: [
-            {
-              key: "smallkash",
-              title: "SmallKash",
-              icon: "smallkashLogo.svg",
-              description: "P2P Transfer App",
-              path: "https://smallkash.chipdeals.me",
-            },
-            {
-              key: "gokard",
-              title: "Gokard",
-              icon: "gokardLogo.png",
-              description: "Virtual Card App",
-              path: "https://gokard.chipdeals.me",
-            },
-            {
-              key: "mytiviplus",
-              title: "MyTivi+",
-              icon: "mytiviplusLogo.svg",
-              description: "TV Subscription App",
-              path: "https://mytiviplus.chipdeals.me",
-            },
-            {
-              key: "momoApi",
-              title: "Mobile Money API",
-              icon: "momoApiLogo.svg",
-              description: "Collect and disburse money with customers",
-              // path: "https://github.com/Chipdeals/Momo-Api",
-              path: "/momo",
-            },
-            /*{
-              key: "canalplusApi",
-              title: "CANAL+ API (soon)",
-              description: "TV Subscription API ",
-              path: "#",
-            },
-            {
-              key: "busApi",
-              title: "Bus API (soon)",
-              description: "Bus Booking api",
-              path: "#",
-            },*/
-          ],
-        },
-        /*{
-          key: "resources",
-          name: "Resources",
-          items: [
-            {
-              key: "",
-              title: "Developers",
-              description: "Start integrating Stripe’s products and tools",
-              path: "#",
-            },
-            {
-              key: "",
-              title: "GitHub",
-              description: "View our repo and shared sources",
-              path: "#",
-            },
-          ],
-        },*/
-        {
-          key: "company",
-          name: "Company",
-          items: [
-            {
-              key: "",
-              title: "About us",
-              iconName: "groups",
-              description: "",
-              path: "/about",
-            },
-            {
-              key: "",
-              title: "Contact us",
-              iconName: "contact_page",
-              description: "",
-              path: "/contact",
-            },
-          ],
-        },
-      ],
       detailNavHovered: false,
       navItemHovered: {},
       navHoverDetailsHovered: false,
@@ -347,9 +228,16 @@ export default defineComponent({
       scrollY: 0,
       hoveredNavArrowLeftPosition: 0,
       showMobileNavPanel: false,
+      showSearchBar: false,
+      searchedText:""
     };
   },
   mounted() {
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+  get: (searchParams, prop) => searchParams.get(prop),
+});
+
+    this.searchedText = params.search || "";
     window.addEventListener("scroll", () => {
       this.documentScrolledUp = window.scrollY > this.scrollY;
       this.scrollY = window.scrollY;
@@ -358,6 +246,18 @@ export default defineComponent({
   methods: {
     goToPath(path) {
       this.$router.push(path);
+    },
+    search() {
+      let searchQuery = this.searchedText.replace(
+        / /g,
+        "SPACEHERESHOULDBEREPLACEDBYSYMBOLEPLUS"
+      );
+      searchQuery = encodeURIComponent(searchQuery);
+      searchQuery = searchQuery.replace(
+        /SPACEHERESHOULDBEREPLACEDBYSYMBOLEPLUS/g,
+        "+"
+      );
+      this.$router.push("/products?search=" + searchQuery);
     },
   },
   watch: {
@@ -368,6 +268,17 @@ export default defineComponent({
       const hoveredPositionXCenter =
         hoveredElement.offsetLeft + hoveredElement.offsetWidth / 2;
       this.hoveredNavArrowLeftPosition = hoveredPositionXCenter;
+    },
+    $route: {
+      handler: function (newRoute) {
+        if (newRoute.name === "home") {
+          this.showSearchBar = false;
+        } else {
+          this.showSearchBar = true;
+        }
+      },
+      deep: true,
+      immediate: true,
     },
   },
 });
@@ -386,10 +297,9 @@ li {
   display: inline-block;
   margin: 0 10px;
 }
-.logo img{
-
-    width: 25px;
-    height: 25px;
+.logo img {
+  width: 25px;
+  height: 25px;
 }
 </style>
 <style scoped>
@@ -400,15 +310,15 @@ li {
   height: 60px;
   transition: all 0.3s ease-in-out;
   top: 0;
+  left: 0;
   width: 100%;
   z-index: 100;
 }
 .header.bg-glass {
-  background-color: rgba(255, 255, 255, 0.2) !important;
-  background-color: #717C8A33 !important;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 1px 6px 0 var(--color4);
-  border-bottom: var(--color4);
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(10px);
+  /* box-shadow: 0 1px 1px 0 var(--blue-white-7); */
+  /* border-bottom: var(--blue-white-4); */
 }
 .header.hidden {
   transform: translateY(-100%);
@@ -457,8 +367,8 @@ li {
   ) !important;
   background-image: linear-gradient(
     135deg,
-    #717C8A22,
-    #717C8A22 50%,
+    #717c8a22,
+    #717c8a22 50%,
     transparent 50%
   ) !important;
   backdrop-filter: blur(10px);
@@ -472,23 +382,23 @@ li {
 .hoverDetailsBody {
   transition: all 0.2s ease-in-out;
   background-color: rgba(255, 255, 255, 0.1) !important;
-  background-color: #717C8A22 !important;
+  background-color: #717c8a22 !important;
   backdrop-filter: blur(10px);
   box-shadow: 0px 2px 3px 0 var(--color4);
   border-radius: 10px;
-    transform: rotateX(-35deg);
-    transform-origin: top;
+  transform: rotateX(-35deg);
+  transform-origin: top;
 }
 .visible .hoverDetailsBody {
-    transform: none!important;
+  transform: none !important;
 }
-.navDetailItemIcon img{
+.navDetailItemIcon img {
   width: 17px;
 }
 .hoverDetails_products {
   width: 300px;
 }
-.hoverDetails_products .navDetailItemIcon img{
+.hoverDetails_products .navDetailItemIcon img {
   width: 30px;
 }
 .hoverDetails_resources {
@@ -507,31 +417,30 @@ li {
   font-size: 12px;
 }
 @media screen and (max-width: 992px) {
-  .closeBtn{
-    position:absolute;
-    top:0px;
-    right:0px;
-  color:var(--color11);
-  color:var(--color10);
+  .closeBtn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    color: var(--color11);
+    color: var(--color10);
   }
   .mobileNavPanel .nav-item > * {
-  line-height: 35px;
-  padding: 0 0 0 0;
-  text-decoration: none;
-  font-size:12.1px;
-}
-.nav-title{
-  color:var(--color11);
-  color:var(--color10);
-}
-.navDetailItemTitle{
-  font-size:12.1px;
-
-}
+    line-height: 35px;
+    padding: 0 0 0 0;
+    text-decoration: none;
+    font-size: 12.1px;
+  }
+  .nav-title {
+    color: var(--color11);
+    color: var(--color10);
+  }
+  .navDetailItemTitle {
+    font-size: 12.1px;
+  }
   .mobileNavPanel {
-opacity:0;
-transition-duration:0.3s;
-    pointer-events:none;
+    opacity: 0;
+    transition-duration: 0.3s;
+    pointer-events: none;
     position: fixed;
     right: 0px;
     z-index: 2000;
@@ -539,27 +448,25 @@ transition-duration:0.3s;
     width: 100vw;
     top: 0px;
   }
-  .mobileNavPanel a{
-color:var(--color4)!important
+  .mobileNavPanel a {
+    color: var(--color4) !important;
   }
 
   .mobileNavPanel.visible {
-    opacity:1;
-    pointer-events:auto;
+    opacity: 1;
+    pointer-events: auto;
   }
-  .navsContainer{
+  .navsContainer {
     background-color: var(--color6);
     box-shadow: 0px 0 8px 0 var(--color4);
 
-  background-color: #717C8A33 !important;
-  background-color: var(--color15)!important;
-  backdrop-filter: blur(10px);
+    background-color: #717c8a33 !important;
+    background-color: var(--color15) !important;
+    backdrop-filter: blur(10px);
     overflow: auto;
     height: 85%;
-    border-radius:20px ;
-    position: relative
-
-
+    border-radius: 20px;
+    position: relative;
   }
   .overlay {
     display: none;
@@ -568,7 +475,7 @@ color:var(--color4)!important
     position: fixed;
     top: 0;
     left: 0;
-    z-index:-1;
+    z-index: -1;
   }
   .mobileNavPanel.visible .overlay {
     display: inline-block;
@@ -578,8 +485,28 @@ color:var(--color4)!important
 .nbProduct {
   font-size: 12px;
 }
-</style>
-<style>
-header{
+
+.bar {
+  margin: 0 auto;
+  width: 80%;
+  position: relative;
+  border-radius: 30px;
+  border: 1px solid #dcdcdc;
+  text-align: center;
+}
+.bar:hover {
+  box-shadow: 1px 1px 8px 1px #dcdcdc;
+}
+.bar:focus-within {
+  box-shadow: 1px 1px 8px 1px #dcdcdc;
+  outline: none;
+}
+.searchbar {
+  height: 45px;
+  border: none;
+  width: 85%;
+  font-size: 16px;
+  outline: none;
+  background-color: transparent;
 }
 </style>
