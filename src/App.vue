@@ -21,6 +21,9 @@ export default {
     Footer,
     AnimatedBg
   },
+  mounted(){
+    this.$initSearch()
+  }
 };
 </script>
 
@@ -76,7 +79,6 @@ export default {
 html,
 body {
   height: 100%;
-  min-height: max-content;
   font-family: "circular-normal", "Work Sans" !important;
   font-size: 16px !important;
   font-weight: 500 !important;

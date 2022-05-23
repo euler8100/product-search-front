@@ -78,6 +78,33 @@ class Commons {
     }
     return userData.uuid || "";
   }
+
+  static async getPosition(notify = () => {}) {
+    const localisationAccepted = Commons.getCookie("authorizedLocalization");
+    if (!localisationAccepted) {
+      notify({
+        text: "Veuillez nous envoyer votre locatisation pour de meilleur résultats",
+        duration: 5000,
+        progress: true,
+      });
+    }
+    await new Promise((resolve) => {
+      setTimeout(resolve, 4000);
+    });
+    return new Promise((resolve) => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          resolve(position);
+          Commons.setCookie("authorizedLocalization", "ok", 100);
+        },
+        (error) => {
+          console.log(error);
+          resolve({ error: true });
+        },
+        { enableHighAccuracy: true }
+      );
+    });
+  }
 }
 
 function setCookie(cname, cvalue, exdays) {
@@ -108,6 +135,7 @@ function cookieExists(cname) {
 }
 
 // const devServerUrl = "https://guangzhou-api.herokuapp.com";
+// const devServerUrl = "https://3ef6-156-0-214-6.ngrok.io";
 const devServerUrl = "https://monster-search-api.herokuapp.com";
 const liveServerUrl = "https://monster-search-api.herokuapp.com";
 

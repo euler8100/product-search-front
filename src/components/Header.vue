@@ -48,16 +48,16 @@
       </div>
       <ul class="">
         <li
-          class="nav-item d-block mb-4"
+          class="nav-item d-block mt-2 mb-3"
           v-for="(navSection, index) in navSections"
           :key="index"
         >
           <div>
-            <li class="nav-item d-block nav-title">
+            <li class="nav-item d-block nav-title ">
               {{ navSection.name }}
             </li>
             <li
-              class="nav-item col-6 col-md-4"
+              class="nav-item col-6 col-md-4 mb-2"
               v-for="(navItem, navItemIndex) in navSection.items"
               :key="navItemIndex"
             >
@@ -159,7 +159,7 @@ export default defineComponent({
             {
               key: "",
               title: "Rechercher",
-              iconName: "groups",
+              iconName: "search",
               description: "",
               path: "/",
             },
@@ -172,14 +172,14 @@ export default defineComponent({
             {
               key: "",
               title: "Inscription",
-              iconName: "groups",
+              iconName: "contact_page",
               description: "",
               path: "/signup",
             },
             {
               key: "",
               title: "Connection",
-              iconName: "contact_page",
+              iconName: "login",
               description: "",
               path: "/login",
             },
@@ -191,24 +191,24 @@ export default defineComponent({
           items: [
             {
               key: "",
-              title: "+ Boutique",
-              iconName: "groups",
+              title: "Ma Boutique",
+              iconName: "store",
               description: "",
-              path: "/shop?new=true",
+              path: "/shop",
             },
             {
               key: "",
               title: "+ Produit",
-              iconName: "groups",
+              iconName: "category",
               description: "",
-              path: "/product?new=1",
+              path: "/shop?newProduct",
             },
             {
               key: "",
-              title: "Ma Boutique",
-              iconName: "contact_page",
+              title: "+ Boutique",
+              iconName: "add_business",
               description: "",
-              path: "/shop",
+              path: "/shop?newShop",
             },
           ],
         },
@@ -409,7 +409,7 @@ li {
   line-height: 35px;
   padding: 0 0 0 0;
   text-decoration: none;
-  font-size: 13px;
+  font-size: 14px;
 }
 .nav-title {
   color: var(--blue-gray-7);

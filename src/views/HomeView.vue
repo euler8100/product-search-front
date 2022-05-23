@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home container">
     <div style="text-align: center">
       <div class="logo">
         <img alt="Google" src="/logo.png" />
@@ -38,8 +38,6 @@ export default {
   mounted() {},
   methods: {
     async search() {
-      const position = await this.getPosition();
-      console.log(position);
       let searchQuery = this.searchedText.replace(
         / /g,
         "SPACEHERESHOULDBEREPLACEDBYSYMBOLEPLUS"
@@ -50,34 +48,6 @@ export default {
         "+"
       );
       this.$router.push("/products?search=" + searchQuery);
-    },
-    async getPosition() {
-      this.notify({
-        text: "Veuillez nous envoyer votre localisation pour permettre la recheche",
-        duration: 3000,
-        progress: false,
-      });
-      await new Promise((resolve) => {
-        setTimeout(resolve, 2000);
-      });
-      return new Promise((resolve) => {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            resolve(position);
-          },
-          (error) => {
-            console.log(error);
-
-            this.notify({
-              text: "Désolé, nous n'arrivons pas à accéder à votre position, veuilez réessayer si vous pensez que c'est une erreur",
-              duration: 3000,
-              progress: false,
-              type: "WARNING",
-            });
-          },
-          { enableHighAccuracy: true }
-        );
-      });
     },
   },
 };

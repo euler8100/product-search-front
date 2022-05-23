@@ -1,13 +1,13 @@
 <template>
   <div class="invisibleBg d-flex">
     <div class="h-100 w-100 backgroundClickReturn" @click="closeDetails"></div>
-    <img class="fixed-top sampleImage" :src="'https://ik.imagekit.io/elrprod/' + pictureToDisplay.path"
+    <img class="fixed-top sampleImage" :src="'https://ik.imagekit.io/whynot/' + pictureToDisplay.path"
       :alt="productData.name" />
     <div class="productDetailsCard cardSession m-auto container row p-0">
       <div class="mobileProductImageContainer m-0 p-0 d-lg-none">
-        <img class="invisibleImage" :src="'https://ik.imagekit.io/elrprod/' + pictureToDisplay.path"
+        <img class="invisibleImage" :src="'https://ik.imagekit.io/whynot/' + pictureToDisplay.path"
           :alt="productData.name" />
-        <img class="resizableImage" :src="'https://ik.imagekit.io/elrprod/' + pictureToDisplay.path"
+        <img class="resizableImage" :src="'https://ik.imagekit.io/whynot/' + pictureToDisplay.path"
           :alt="productData.name" @click="showMobileZoom = true" />
         <div class="zoomIcon" @click="showMobileZoom = true">
           <span class="material-icons material-icons-outlined notranslate">
@@ -28,7 +28,7 @@
       <div class="desktopProductImageContainer d-none d-lg-flex col-6" >
         <div class="img-zoom-container my-auto">
           <img id="imageToZoom" class="desktopPic m-auto"
-            :src="'https://ik.imagekit.io/elrprod/' + pictureToDisplay.path" :alt="productData.name" />
+            :src="'https://ik.imagekit.io/whynot/' + pictureToDisplay.path" :alt="productData.name" />
           <div class="img-zoom-lens" id="zoom-lens"></div>
           <div id="zoomResult" class="desktopZoomPic cardSession"></div>
         </div>
@@ -85,7 +85,7 @@
                 <div class="col-10 mx-auto">
                   <video style="width: 100%" autoplay controls v-if="!$Commons.isEmpty(productData.videoPath)">
                     <source :src="
-                      'https://ik.imagekit.io/elrprod/' +
+                      'https://ik.imagekit.io/whynot/' +
                       productData.videoPath
                     " />
                     Your browser does not support the video tag.
@@ -99,7 +99,7 @@
       </div>
 
       <div class="mobileZoomContainer" v-if="showMobileZoom">
-        <img class="zoomPic alignXCenter alignYCenter" :src="'https://ik.imagekit.io/elrprod/' + pictureToDisplay.path"
+        <img class="zoomPic alignXCenter alignYCenter" :src="'https://ik.imagekit.io/whynot/' + pictureToDisplay.path"
           :alt="productData.name" width="90%" />
         <button class="d-inline-block zoomClose" @click="showMobileZoom = false">
           <span class="material-icons material-icons-outlined notranslate">

@@ -13,19 +13,6 @@ async function sendProductGettingRequest(marketUuid) {
 function parseResponse(productResponse) {
   console.log(productResponse);
 
-  return {
-    success: true,
-    message: "",
-    products: [
-      {
-        name: "my product",
-        description: "That is the mor best product",
-        price: 5000,
-        uuid: "unicproductId",
-      },
-    ],
-  };
-
   if (productResponse.status.code === 200) {
     return {
       success: true,

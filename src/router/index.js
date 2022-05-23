@@ -4,6 +4,10 @@ import Product from "../views/Product.vue";
 
 const routes = [
   {
+    path: "/:catchAll(.*)",
+    redirect: { name: "home" }
+  },
+  {
     path: "/",
     name: "home",
     component: HomeView,

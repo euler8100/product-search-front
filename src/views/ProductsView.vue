@@ -1,6 +1,9 @@
 <template>
-  <div class="home">
-    <div class="products">
+  <div class="productsView container pt-3">
+    <div
+      class="products"
+      v-if="!loadingProducts && !$Commons.isEmpty(products)"
+    >
       <div class="row">
         <Product
           v-for="(product, productIndex) in products"
@@ -10,6 +13,10 @@
         />
       </div>
     </div>
+    <div v-else-if="!loadingProducts">
+      Aucune produit trouvé pour <span class="bold">{{ searchedText }}</span>
+    </div>
+    <div v-else>Recherche en cours . . .</div>
   </div>
   <router-view isChildren />
 </template>
@@ -23,130 +30,29 @@ export default {
   data() {
     return {
       searchedText: "",
-      products: [
-        {
-          name: "product",
-          description: "That is the mor best product",
-          price: 5000,
-          uuid: "somthingUnic",
-          picturePath: "/pictures/default/picture_1650280308793.png",
-          alternativePicturesPath: [],
-          marketName: "Franc prix",
-          marketLocalisation: {},
-          marketLocalisationDesctiption: "",
-          category: "",
-        },
-        {
-          name: "product",
-          description: "That is the mor best product",
-          price: 5000,
-          uuid: "somthingUnic",
-          picturePath: "/pictures/default/picture_1650280308793.png",
-          alternativePicturesPath: [],
-          marketName: "Franc prix",
-          marketLocalisation: {},
-          marketLocalisationDesctiption: "",
-          category: "",
-        },
-        {
-          name: "product",
-          description: "That is the mor best product",
-          price: 5000,
-          uuid: "somthingUnic",
-          picturePath: "/pictures/default/picture_1650280308793.png",
-          alternativePicturesPath: [],
-          marketName: "Franc prix",
-          marketLocalisation: {},
-          marketLocalisationDesctiption: "",
-          category: "",
-        },
-        {
-          name: "product",
-          description: "That is the mor best product",
-          price: 5000,
-          uuid: "somthingUnic",
-          picturePath: "/pictures/default/picture_1650280308793.png",
-          alternativePicturesPath: [],
-          marketName: "Franc prix",
-          marketLocalisation: {},
-          marketLocalisationDesctiption: "",
-          category: "",
-        },
-        {
-          name: "product",
-          description: "That is the mor best product",
-          price: 5000,
-          uuid: "somthingUnic",
-          picturePath: "/pictures/default/picture_1650280308793.png",
-          alternativePicturesPath: [],
-          marketName: "Franc prix",
-          marketLocalisation: {},
-          marketLocalisationDesctiption: "",
-          category: "",
-        },
-        {
-          name: "product",
-          description: "That is the mor best product",
-          price: 5000,
-          uuid: "somthingUnic",
-          picturePath: "/pictures/default/picture_1650280308793.png",
-          alternativePicturesPath: [],
-          marketName: "Franc prix",
-          marketLocalisation: {},
-          marketLocalisationDesctiption: "",
-          category: "",
-        },
-        {
-          name: "product",
-          description: "That is the mor best product",
-          price: 5000,
-          uuid: "somthingUnic",
-          picturePath: "/pictures/default/picture_1650280308793.png",
-          alternativePicturesPath: [],
-          marketName: "Franc prix",
-          marketLocalisation: {},
-          marketLocalisationDesctiption: "",
-          category: "",
-        },
-        {
-          name: "product",
-          description: "That is the mor best product",
-          price: 5000,
-          uuid: "somthingUnic",
-          picturePath: "/pictures/default/picture_1650280308793.png",
-          alternativePicturesPath: [],
-          marketName: "Franc prix",
-          marketLocalisation: {},
-          marketLocalisationDesctiption: "",
-          category: "",
-        },
-      ],
+      loadingProducts: true,
+      products: [],
     };
   },
   mounted() {},
   methods: {
     async searchProdcuts() {
-      const position = await this.getPosition();
+      this.loadingProducts = true;
+      const productsResponse = await this.$SearchProduct(this.searchedText);
+      this.products = productsResponse.products;
+      const position = await this.$Commons.getPosition(this.notify);
       console.log(position);
-    },
-    async getPosition() {
-      return new Promise((resolve) => {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            resolve(position);
-          },
-          (error) => {
-            console.log(error);
-            this.notify({
-              text: "Désolé, nous n'arrivons pas à accéder à votre position, veuilez réessayer si vous pensez que c'est une erreur",
-              duration: 3000,
-              progress: false,
-              type: "WARNING",
-            });
-          },
-          { enableHighAccuracy: true }
-        );
-      });
+      if (position.error) {
+        this.loadingProducts = false;
+        this.notify({
+          text: "Désolé, nous n'arrivons pas à accéder à votre position. Les résultats ne seronrt pas filtré par rapport à votre position.",
+          duration: 6000,
+          progress: false,
+          type: "WARNING",
+        });
+        return;
+      }
+      this.loadingProducts = false;
     },
   },
   watch: {

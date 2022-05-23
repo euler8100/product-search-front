@@ -3,67 +3,23 @@ import algoliasearch from "algoliasearch/lite";
 const { Commons } = require("../../assets/js/utils/commons");
 
 let algoliaClient = algoliasearch(
-  "XUMAITX9CD",
-  "2a96763b1bd4fa9645a3197a8467dc42"
+  "QFUBN7H8L0",
+  "1cd8be36180780686520207dba2e0aec"
 );
-if (!Commons.isLiveEnv()) {
-  algoliaClient = algoliasearch(
-    "BXK5T7Q2HD",
-    "ad326eca91f5232ca0ac4f12e62d041b"
-  );
-}
 
 let searchIndex = null;
-let usedLanguage = "";
-let algoliaIndexNameInitial = "customerProducts_";
-if (!Commons.isLiveEnv()) {
-  algoliaIndexNameInitial = "adminProducts_";
-}
+let initiated = false;
 
-async function initSearch(language = "fr") {
-  if (usedLanguage === language) {
+async function initSearch() {
+  if (initiated) {
     return;
   }
-  searchIndex = algoliaClient.initIndex(algoliaIndexNameInitial + language);
-  usedLanguage = language;
+  searchIndex = algoliaClient.initIndex("monstersearchdb");
+  initiated = true;
 }
 
 async function searchProduct(text) {
-  const searchResponse = await searchIndex.search(text);
-  return searchResponse.hits;
-}
-
-async function getCategoriesList(productType) {
-  console.log(productType);
-  const searchResponse = await searchIndex.search("", {
-    filters: 'type:"' + productType + '"',
-    facets: ["category"],
-    hitsPerPage: 0,
-  });
-  console.log(searchResponse);
-  return searchResponse.facets.category || {};
-}
-
-async function getProductsByCategory(
-  categoryName,
-  nbProductsPerPage = 4,
-  page = 0
-) {
-  const searchResponse = await searchIndex.search("", {
-    filters: 'category:"' + categoryName + '"',
-    page,
-    hitsPerPage: nbProductsPerPage,
-  });
-  return {
-    products: searchResponse.hits,
-    totalPages: searchResponse.nbPages,
-    currentPage: searchResponse.page,
-  };
-}
-
-async function getPromotedProducts() {
-  const searchResponse = await searchIndex.search("", {
-    filters: 'isInPromotion:"promotion"',
+  const searchResponse = await searchIndex.search(text, {
     page: 0,
     hitsPerPage: 10000000000,
   });
@@ -86,13 +42,8 @@ export default {
   install: (app) => {
     app.use(InstantSearch);
     app.config.globalProperties.$AlgoliaClient = algoliaClient;
-    app.config.globalProperties.$AlgoliaIndexNameInitial =
-      algoliaIndexNameInitial;
     app.config.globalProperties.$initSearch = initSearch;
     app.config.globalProperties.$SearchProduct = searchProduct;
-    app.config.globalProperties.$GetCategoriesList = getCategoriesList;
-    app.config.globalProperties.$GetProductsByCategory = getProductsByCategory;
-    app.config.globalProperties.$GetPromotedProducts = getPromotedProducts;
     app.config.globalProperties.$GetProductByUuid = getProductByUuid;
   },
 };

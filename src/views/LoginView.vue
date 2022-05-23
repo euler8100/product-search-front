@@ -1,10 +1,10 @@
 <template>
-  <div class="login col-10 col-sm-8 mx-auto">
+  <div class="login container col-sm-8 mx-auto">
     <h1 class="title fs-5">Connectez-vous</h1>
     <form @submit.prevent="login" class="mt-4">
       <div class="row mb-2">
         <div class="col-12">
-          <div class="form-group mb-4 mb-sm-5">
+          <div class="form-group mb-3 mb-sm-4">
             <input
               type="text"
               class="form-control"
@@ -17,7 +17,7 @@
         </div>
 
         <div class="col-12">
-          <div class="form-group mb-4 mb-sm-5">
+          <div class="form-group mb-3 mb-sm-4">
             <input
               type="password"
               class="form-control"
@@ -45,7 +45,10 @@
         </span>
         <br />
         <br />
-        <router-link :to="'/signup?next='+$route.query.next||'home'" class="">
+        <router-link
+          :to="'/signup?next=' + ($route.query.next || 'home')"
+          class=""
+        >
           Je n'ai pas de compte.
         </router-link>
       </div>
@@ -108,7 +111,7 @@ export default {
 
 <style scoped>
 .login {
-  margin-top: 80px;
+  margin-top: 100px;
   margin-bottom: 20px;
 }
 

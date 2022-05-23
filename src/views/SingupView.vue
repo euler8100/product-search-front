@@ -1,10 +1,10 @@
 <template>
-  <div class="signup col-10 col-sm-8 mx-auto">
+  <div class="signup container  col-sm-8 mx-auto">
     <h1 class="title fs-5">Créez un nouveau compte</h1>
     <form @submit.prevent="signup" class="mt-4">
       <div class="row mb-2">
         <div class="col-12">
-          <div class="form-group mb-4 mb-sm-5">
+          <div class="form-group mb-3 mb-sm-4">
             <input
               type="text"
               class="form-control"
@@ -16,7 +16,7 @@
           </div>
 
           <div class="col-12">
-            <div class="form-group mb-4 mb-sm-5">
+            <div class="form-group mb-3 mb-sm-4">
               <input
                 type="text"
                 class="form-control"
@@ -29,7 +29,7 @@
           </div>
 
           <div class="col-12">
-            <div class="form-group mb-4 mb-sm-5">
+            <div class="form-group mb-3 mb-sm-4">
               <input
                 type="password"
                 class="form-control"
@@ -44,7 +44,7 @@
       </div>
 
       <div class="text">
-        <button class="ctaBtn" role="button">S'inscritre</button>
+        <button class="ctaBtn" role="button">S'inscrire</button>
         <span
           class="
             material-icons material-icons-outlined
@@ -58,7 +58,12 @@
         </span>
         <br />
         <br />
-        <router-link :to="'/login?next='+$route.query.next||'home'" class=""> J'ai déja un compte. </router-link>
+        <router-link
+          :to="'/login?next=' + ($route.query.next || 'home')"
+          class=""
+        >
+          J'ai déja un compte.
+        </router-link>
       </div>
     </form>
   </div>
@@ -119,7 +124,7 @@ export default {
 
 <style scoped>
 .signup {
-  margin-top: 50px;
+  margin-top: 80px;
   margin-bottom: 20px;
 }
 

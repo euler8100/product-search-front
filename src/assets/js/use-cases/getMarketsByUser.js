@@ -14,22 +14,6 @@ async function sendCategoriesGettingRequest() {
 
 function parseResponse(marketResponse) {
   console.log(marketResponse);
-  return {
-    success: true,
-    message: "",
-    markets: [
-      {
-        name: "euler",
-        positionDescription: "a coté de l'aéroport",
-        coordinate: {
-          latitude: 6.3702928,
-          longitude: 2.3912362,
-        },
-        isAuthorized: true,
-        uuid: "uniqUuid",
-      },
-    ],
-  };
 
   if (marketResponse.status.code === 200) {
     return {

@@ -1,36 +1,75 @@
 <template>
-  <div v-if="productTagId" :id="productTagId" :class="
-    (productClasses ||
-      'col-6 mx-auto msf-sm-0 mb-3') +
-    (productIsVisible ? '  p-2 ' : '')
-  ">
-    <div class="w-100 position-relative productContainer p-1" v-if="productIsVisible">
-      <div v-if="!productData.uuid" class="productImageContainer cursorLoop w-100" @click="saveProduct()">
-        <div class="productImage" :style="{
-          'background-image': ' url(/images/loading-buffer.gif)',
-        }"></div>
+  <div
+    v-if="productTagId"
+    :id="productTagId"
+    :class="
+      (productClasses || 'col-6 mx-auto msf-sm-0 mb-3') +
+      (productIsVisible ? '  p-2 ' : '')
+    "
+  >
+    <div
+      class="w-100 position-relative productContainer p-1"
+      v-if="productIsVisible"
+    >
+      <div
+        v-if="!productData.uuid || noclick"
+        class="productImageContainer cursorLoop w-100"
+        @click="saveProduct()"
+      >
+        <div
+          class="productImage"
+          :style="{
+            'background-image':
+              'url(https://ik.imagekit.io/whynot/' +
+              productData.picturePath +
+              '?tr=q-20), ' +
+              'url(' +
+              replacePicture +
+              '), ' +
+              ' url(/images/loading-buffer.gif)',
+          }"
+        ></div>
       </div>
-      <router-link v-else :to="productLink" class="productImageContainer d-block cursorLoop w-100"
-        @click="saveProduct()">
-        <div class="productImage" :style="{
-          'background-image':
-            'url(https://ik.imagekit.io/elrprod/' +
-            productData.picturePath +
-            '?tr=q-20), url(/images/loading-buffer.gif)',
-        }"></div>
+      <router-link
+        v-else
+        :to="productLink"
+        class="productImageContainer d-block cursorLoop w-100"
+        @click="saveProduct()"
+      >
+        <div
+          class="productImage"
+          :style="{
+            'background-image':
+              'url(https://ik.imagekit.io/whynot/' +
+              productData.picturePath +
+              '?tr=q-20), url(/images/loading-buffer.gif)',
+          }"
+        ></div>
       </router-link>
       <div class="productName text-center my-2">{{ productData.name }}</div>
 
-      <div class="category my-2" v-if="(productData.category && !hideCategory) && !showAsPromotion">
+      <div
+        class="category my-2"
+        v-if="productData.category && !hideCategory && !showAsPromotion"
+      >
         {{ productData.category }}
       </div>
-      <div class="category my-2" v-if="showAsPromotion && productData.promotionMsg2">
+      <div
+        class="category my-2"
+        v-if="showAsPromotion && productData.promotionMsg2"
+      >
         {{ productData.promotionMsg2 }}
       </div>
-      <div class="oblicBandMessage bold" v-if="productData.isInPromotion  && productData.promotionMsg1">
+      <div
+        class="oblicBandMessage bold"
+        v-if="productData.isInPromotion && productData.promotionMsg1"
+      >
         {{ productData.promotionMsg1 }}
       </div>
-      <div class="longHorizontalBand bold marquee" v-if="showAsPromotion && productData.promotionMsg3">
+      <div
+        class="longHorizontalBand bold marquee"
+        v-if="showAsPromotion && productData.promotionMsg3"
+      >
         <div>
           {{ productData.promotionMsg3 }}
         </div>
@@ -45,11 +84,13 @@ export default {
   name: "Product",
   props: {
     productData: Object,
+    replacePicture: String,
     productClasses: String,
     hideCategory: Boolean,
     showSubCategory: Boolean,
     onSubCategoyClick: Function,
     showAsPromotion: Boolean,
+    noclick: Boolean,
   },
   data() {
     return {
@@ -62,10 +103,10 @@ export default {
   mounted() {
     const productId = this.productData.name
       ? this.productData.name
-        .replace(/^(.+? )(.+? ).+$/g, "$1,$2")
-        .replace(/\W/g, "-") +
-      "_" +
-      this.productData.uuid
+          .replace(/^(.+? )(.+? ).+$/g, "$1,$2")
+          .replace(/\W/g, "-") +
+        "_" +
+        this.productData.uuid
       : "none";
     //console.log(this.$route, this.$router);
     this.productPath =
@@ -104,8 +145,8 @@ export default {
     },
     observeElementVisibility(
       elementSelector,
-      onVisible = () => { },
-      onUnvisible = () => { }
+      onVisible = () => {},
+      onUnvisible = () => {}
     ) {
       const element = document.querySelector(elementSelector);
       var observer = new IntersectionObserver(
@@ -213,23 +254,23 @@ export default {
   text-align: center;
 }
 
-.longHorizontalBand {   
-    width: 96%;
-    height: 41px;
-    background-image: linear-gradient(transparent, rgb(27 79 40 / 20%)  70%, transparent);
-    position: absolute!important;
-    bottom: 20%;
-    color: var(--gray9);
-    backdrop-filter: blur(3px);
-
+.longHorizontalBand {
+  width: 96%;
+  height: 41px;
+  background-image: linear-gradient(
+    transparent,
+    rgb(27 79 40 / 20%) 70%,
+    transparent
+  );
+  position: absolute !important;
+  bottom: 20%;
+  color: var(--gray9);
+  backdrop-filter: blur(3px);
 }
-
 
 .productImageContainer:hover {
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
 }
-
-
 
 .marquee {
   overflow: hidden;
@@ -249,7 +290,7 @@ export default {
   -moz-animation: scroll-left 2s linear infinite;
   -webkit-animation: scroll-left 2s linear infinite;
   animation: scroll-left 20s linear infinite;
-  width:max-content;
+  width: max-content;
 }
 
 @-moz-keyframes scroll-left {

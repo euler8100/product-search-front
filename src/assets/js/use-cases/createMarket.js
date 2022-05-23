@@ -38,7 +38,7 @@ function parseResponse(creationResponse) {
   };
 }
 async function createMarket(marketData) {
-  console.log("create Merket");
+  console.log("create Market");
   const creationResponse = await sendMarketCreationRequst(marketData);
   const parsedResponse = parseResponse(creationResponse);
   console.log(parsedResponse);
