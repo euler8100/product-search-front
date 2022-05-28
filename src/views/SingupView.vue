@@ -24,7 +24,7 @@
                 v-model="connectionId"
                 placeholder=" "
               />
-              <label class="label"> Id de Connection </label>
+              <label class="label"> Id de Connexion </label>
             </div>
           </div>
 
@@ -37,7 +37,7 @@
                 v-model="password"
                 placeholder=" "
               />
-              <label class="label"> Mot de pass </label>
+              <label class="label"> Mot de passe </label>
             </div>
           </div>
         </div>
@@ -62,7 +62,7 @@
           :to="'/login?next=' + ($route.query.next || 'home')"
           class=""
         >
-          J'ai déja un compte.
+          J'ai déjà un compte.
         </router-link>
       </div>
     </form>

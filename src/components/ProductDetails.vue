@@ -57,9 +57,10 @@
             <span class="float-left pr-3 grayText">★★★★★</span>
             <span style="width: 190px" class="grayText">
               {{productData.marketName}}</span>
-            <h4 class="grayText">{{ productData.category }}</h4>
+            <h4 class="grayText d-none" >{{ productData.category }}</h4>
+            <h4 class="title">{{ productData.price }} FCFA</h4>
             <br /><br /><br />
-            <button class="discussionBtn" @click="sendWhatsapp()" v-if="false">
+            <button class="ctaBtn whatsappCta" @clicko="sendWhatsapp()">
               <span class="material-icons material-icons-round notranslate me-2" style="position: relative; top: 6px">
                 whatsapp
               </span>

@@ -58,6 +58,9 @@ export default {
   watch: {
     $route: {
       handler: function (newRoute) {
+        if (this.searchedText === newRoute.query.search) {
+          return;
+        }
         this.searchedText = newRoute.query.search || "";
         this.searchProdcuts();
       },

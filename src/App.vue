@@ -1,5 +1,5 @@
 <template>
-<AnimatedBg style="z-index:0"/>
+  <AnimatedBg style="z-index: 0" />
   <div class="mobileView position-relative p-0 mx-auto">
     <Header />
     <div style="min-height: 50vh">
@@ -19,11 +19,11 @@ export default {
   components: {
     Header,
     Footer,
-    AnimatedBg
+    AnimatedBg,
   },
-  mounted(){
-    this.$initSearch()
-  }
+  mounted() {
+    this.$initSearch();
+  },
 };
 </script>
 
@@ -183,14 +183,14 @@ a.active {
   position: relative;
   display: inline-block;
   padding: 0.75rem 1.25rem 0.95rem;
-  background-color: var(--blue-normal);
   border-radius: 20px;
-  color: var(--blue-white-7) !important;
   font-size: 1rem;
   line-height: 1.125rem;
-  box-shadow: 0px 4px 0 var(--blue-dark-4);
   text-decoration: none;
   border-width: 2px;
+  background-color: var(--blue-normal);
+  color: var(--blue-white-7) !important;
+  box-shadow: 0px 4px 0 var(--blue-dark-4);
   border-color: var(--blue-dark-1);
   border-style: solid;
   cursor: pointer;
@@ -205,6 +205,20 @@ a.active {
   border-color: var(--blue-dark-4);
   color: var(--blue-white-7) !important;
   text-decoration: none;
+}
+
+.whatsappCta {
+  background-color: rgb(0, 128, 102);
+  color: var(--white) !important;
+  box-shadow: 0px 4px 0 hsl(170, 51%, 20%);
+  border-color: hsl(157, 51%, 20%);
+}
+
+.whatsappCta:hover {
+  box-shadow: 0 0 0 hsl(170, 51%, 20%);
+  background-color: hsl(170, 51%, 20%);
+  border-color: hsl(170, 51%, 20%);
+  color: var(--white) !important;
 }
 
 img.shime {

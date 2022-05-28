@@ -53,7 +53,7 @@
           :key="index"
         >
           <div>
-            <li class="nav-item d-block nav-title ">
+            <li class="nav-item d-block nav-title">
               {{ navSection.name }}
             </li>
             <li
@@ -259,6 +259,12 @@ export default defineComponent({
         } else {
           this.showSearchBar = true;
         }
+        
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+          get: (searchParams, prop) => searchParams.get(prop),
+        });
+
+        this.searchedText = params.search || "";
       },
       deep: true,
       immediate: true,
@@ -440,7 +446,7 @@ li {
   height: 85%;
   border-radius: 20px;
   position: relative;
-  max-width: 500px
+  max-width: 500px;
 }
 .overlay {
   display: none;
