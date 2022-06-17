@@ -2,23 +2,20 @@
   <div class="shop container">
     <div v-if="!$Commons.isEmpty(market) && !loadingMarket" class="mt-2">
       <div class="marketData">
-        <h3 class="title">{{ market.name }}</h3>
+        <h3 class="title">{{ market.name }} <span class="material-icons-outlined" @click="initMarketUpdate()"
+            style="position: relative;top: 4px; cursor: pointer;">
+            edit
+          </span>
+        </h3>
+        <h4 class="">Whatsapp: {{ market.whatsappNumber }}</h4>
         <h4 class="">{{ market.positionDescription }}</h4>
       </div>
       <div class="products">
         <div class="row">
-          <Product
-            :productData="{ name: 'Nouveau produit' }"
-            replacePicture="'/images/add.png'"
-            @click="initProductCreation()"
-          />
-          <Product
-            v-for="(product, productIndex) in products"
-            :key="productIndex"
-            :productData="product"
-            noclick
-            @click="initProductModification(product)"
-          />
+          <Product :productData="{ name: 'Nouveau produit' }" replacePicture="'/images/add.png'"
+            @click="initProductCreation()" />
+          <Product v-for="(product, productIndex) in products" :key="productIndex" :productData="product" noclick
+            @click="(event) => { showProductMenu(event, product) }" />
         </div>
       </div>
     </div>
@@ -33,41 +30,31 @@
     <div v-else class="mt-5 pt-2">Chargement . . .</div>
   </div>
 
-  <div
-    class="modalContainer d-flex"
-    :class="{ visible: modalIsVisible || forceModalVisible }"
-  >
+  <div class="modalContainer d-flex" :class="{ visible: modalIsVisible || forceModalVisible }">
     <div class="overlay" @click="modalIsVisible = false"></div>
     <div class="modalBox col-11 col-sm-10 col-md-8 m-auto p-4">
       <div class="d-inline-block closeBtn p-3" @click="modalIsVisible = false">
         <span class="material-icons-outlined"> close </span>
       </div>
-      <div v-if="modalReason === 'createMarket'">
-        <form @submit.prevent="createMarket" class="mt-4">
+      <div v-if="/(createMarket)|(updateMarket)/.test(modalReason)">
+        <form @submit.prevent="/createMarket/.test(modalReason)
+        ? createMarket()
+        : updateMarket()" class="mt-4">
           <div class="row mb-2">
             <div class="col-12">
               <div class="form-group mb-3 mb-sm-4">
-                <input
-                  type="text"
-                  class="form-control"
-                  required
-                  v-model="modalData.marketName"
-                  placeholder=" "
-                />
+                <input type="text" class="form-control" required v-model="modalData.marketName" placeholder=" " />
                 <label class="label"> Nom de la boutique </label>
+              </div>
+              <div class="form-group mb-3 mb-sm-4">
+                <input type="tel" class="form-control" required v-model="modalData.whatsappNumber" placeholder=" " />
+                <label class="label"> Numéro whatsapp </label>
               </div>
 
               <div class="col-12">
                 <div class="form-group mb-3 mb-sm-4">
-                  <textarea
-                    type="text"
-                    class="form-control"
-                    style="height: 130px"
-                    required
-                    v-model="modalData.marketPositionDescription"
-                    placeholder=" "
-                    rows="4"
-                  ></textarea>
+                  <textarea type="text" class="form-control" style="height: 130px" required
+                    v-model="modalData.marketPositionDescription" placeholder=" " rows="4"></textarea>
                   <label class="label">
                     Brève description de votre position
                   </label>
@@ -79,75 +66,47 @@
           boutique.
 
           <div class="text-end">
-            <span
-              class="
+            <span class="
                 material-icons material-icons-outlined
                 refreshIcon
                 me-4
                 notranslate
-              "
-              v-if="creatingMarket"
-            >
+              " v-if="creatingMarket || updatingMarket">
               refresh
             </span>
-            <button class="ctaBtn" role="button">Démarrer</button>
+            <button class="ctaBtn" role="button"> {{ /createMarket/.test(modalReason) ? 'Démarrer' : "Mettre à jour" }}
+            </button>
           </div>
         </form>
       </div>
       <div v-if="/(createProduct)|(updateProduct)/.test(modalReason)">
-        <form
-          @submit.prevent="
-            /createProduct/.test(modalReason)
-              ? createProduct()
-              : updateProduct()
-          "
-          class="mt-4"
-        >
+        <form @submit.prevent="
+          /createProduct/.test(modalReason)
+            ? createProduct()
+            : updateProduct()
+        " class="mt-4">
           <div class="row mb-2">
             <div class="col-12">
               <div class="form-group mb-3 mb-sm-4">
-                <input
-                  type="text"
-                  class="form-control"
-                  required
-                  v-model="modalData.productName"
-                  placeholder=" "
-                />
+                <input type="text" class="form-control" required v-model="modalData.productName" placeholder=" " />
                 <label class="label"> Nom du produit </label>
               </div>
 
               <div class="form-group mb-3 mb-sm-4">
-                <input
-                  type="number"
-                  class="form-control"
-                  required
-                  v-model="modalData.productPrice"
-                  placeholder=" "
-                />
+                <input type="number" class="form-control" required v-model="modalData.productPrice" placeholder=" " />
                 <label class="label"> Prix en fcfa </label>
               </div>
 
               <div class="form-group mb-3 mb-sm-4">
-                <input
-                  type="file"
-                  class="form-control"
-                  :required="/createProduct/.test(modalReason)"
-                  @change="pictureChange"
-                />
+                <input type="file" class="form-control" :required="/createProduct/.test(modalReason)"
+                  @change="pictureChange" />
                 <label class="label"> Prix en fcfa </label>
               </div>
 
               <div class="col-12">
                 <div class="form-group mb-3 mb-sm-4">
-                  <textarea
-                    type="text"
-                    class="form-control"
-                    style="height: 130px"
-                    required
-                    v-model="modalData.productDescription"
-                    placeholder=" "
-                    rows="4"
-                  ></textarea>
+                  <textarea type="text" class="form-control" style="height: 130px" required
+                    v-model="modalData.productDescription" placeholder=" " rows="4"></textarea>
                   <label class="label"> Décrivez votre produit </label>
                 </div>
               </div>
@@ -155,15 +114,12 @@
           </div>
 
           <div class="text-end">
-            <span
-              class="
+            <span class="
                 material-icons material-icons-outlined
                 refreshIcon
                 me-4
                 notranslate
-              "
-              v-if="creatingProduct || updatingProduct"
-            >
+              " v-if="creatingProduct || updatingProduct">
               refresh
             </span>
             <button class="ctaBtn" role="button">Enregistrer</button>
@@ -172,12 +128,25 @@
       </div>
     </div>
   </div>
+  <div class="menu" :style="{ top: menuPositions.y + 'px', left: menuPositions.x + 'px' }" v-if="showMenu">
+    <div class="overlay" @click="showMenu = false"></div>
+
+    <ul class="menu-options">
+      <li class="menu-option" @click="initProductModification"> <span class="material-icons-outlined"
+          style="position: relative;top: 7px;">
+          edit
+        </span> Modifier</li>
+      <li class="menu-option" @click="deleteProduct"> <span class="material-icons-outlined"
+          style="position: relative;top: 7px;">
+          delete
+        </span> Supprimer</li>
+    </ul>
+  </div>
   <router-view isChildren />
 </template>
 
 <script>
 import Product from "@/components/Product";
-import { updateProduct } from "@/assets/js/use-cases/updateProduct";
 
 export default {
   name: "ShopView",
@@ -195,7 +164,9 @@ export default {
       forceModalVisible: false,
       modalReason: "createMarket",
       modalData: {
+        marketUuid: "",
         marketName: "",
+        whatsappNumber:"",
         marketPositionDescription: "",
         productUuid: "",
         productName: "",
@@ -203,6 +174,11 @@ export default {
         productPrice: "",
         productPicture: undefined,
       },
+      showMenu: false,
+      menuPositions: {
+        x: 0,
+        y: 0
+      }
     };
   },
   async mounted() {
@@ -228,7 +204,7 @@ export default {
       this.notify({
         text: "Désolé, mais vous ne pouvez créer qu'une seul boutique pour le moment",
         duration: 4000,
-        progress: false,
+        progress: true,
         type: "WARNING",
       });
       this.$router.replace({ query: null });
@@ -250,7 +226,7 @@ export default {
         this.notify({
           text: marketResponse.message,
           duration: 4000,
-          progress: false,
+          progress: true,
           type: "WARNING",
         });
         return;
@@ -268,13 +244,40 @@ export default {
       this.modalData.productPicture = undefined;
       this.showModal("createProduct");
     },
-    initProductModification(product) {
+    initProductModification() {
+      // initProductModification(product) {
+      // this.modalData.productUuid = product.uuid;
+      // this.modalData.productName = product.name;
+      // this.modalData.productDescription = product.description;
+      // this.modalData.productPrice = product.price;
+      // this.modalData.productPicture = undefined;
+      this.showMenu = false
+      this.showModal("updateProduct");
+    },
+    initMarketUpdate() {
+      this.modalData.marketUuid = this.market.uuid
+      this.modalData.marketName = this.market.name
+      this.modalData.marketPositionDescription = this.market.positionDescription
+      this.modalData.whatsappNumber = this.market.whatsappNumber
+      this.showModal("updateMarket");
+    },
+    showProductMenu(clickEvent, product) {
+      console.log(clickEvent.clientX);
+      console.log(clickEvent.clientY);
+
       this.modalData.productUuid = product.uuid;
       this.modalData.productName = product.name;
       this.modalData.productDescription = product.description;
       this.modalData.productPrice = product.price;
       this.modalData.productPicture = undefined;
-      this.showModal("updateProduct");
+
+      this.menuPositions = {
+        x: clickEvent.clientX,
+        y: clickEvent.clientY,
+      }
+
+      this.showMenu = true
+
     },
     async createMarket() {
       this.forceModalVisible = true;
@@ -284,7 +287,7 @@ export default {
         this.notify({
           text: "Désolé, nous n'arrivons pas à accéder à votre position, veuilez réessayer si vous pensez que c'est une erreur",
           duration: 6000,
-          progress: false,
+          progress: true,
           type: "WARNING",
         });
         return;
@@ -292,6 +295,7 @@ export default {
       const marketData = {
         name: this.modalData.marketName,
         positionDescription: this.modalData.marketPositionDescription,
+        whatsappNumber: this.modalData.whatsappNumber,
         coordinate: {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -305,7 +309,7 @@ export default {
         this.notify({
           text: marketResponse.message,
           duration: 4000,
-          progress: false,
+          progress: true,
           type: "WARNING",
         });
         return;
@@ -315,7 +319,54 @@ export default {
         text: "Boutique créee",
         duration: 3000,
         type: "SUCCESS",
-        progress: false,
+        progress: true,
+      });
+      this.modalIsVisible = false;
+      await this.loadMarket();
+      this.refreshProducts();
+    },
+    async updateMarket() {
+      this.forceModalVisible = true;
+      this.creatingMarket = true;
+      const position = await this.$Commons.getPosition(this.notify);
+      if (position.error) {
+        this.notify({
+          text: "Désolé, nous n'arrivons pas à accéder à votre position, veuilez réessayer si vous pensez que c'est une erreur",
+          duration: 6000,
+          progress: true,
+          type: "WARNING",
+        });
+        return;
+      }
+      const marketData = {
+        uuid: this.modalData.marketUuid,
+        name: this.modalData.marketName,
+        positionDescription: this.modalData.marketPositionDescription,
+        whatsappNumber: this.modalData.whatsappNumber,
+        coordinate: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        },
+      };
+      console.log(marketData);
+      const marketResponse = await this.$Controller.updateMarket(marketData);
+      this.creatingMarket = false;
+      this.forceModalVisible = false;
+      if (!marketResponse.success) {
+        this.notify({
+          text: marketResponse.message,
+          duration: 4000,
+          progress: true,
+          type: "WARNING",
+        });
+        return;
+      }
+
+      this.notify({
+        text: "Boutique Mise à jour",
+        duration: 3000,
+        type: "SUCCESS",
+        progress: true,
       });
       this.modalIsVisible = false;
       await this.loadMarket();
@@ -335,7 +386,7 @@ export default {
         this.notify({
           text: productsResponse.message,
           duration: 4000,
-          progress: false,
+          progress: true,
           type: "WARNING",
         });
         return;
@@ -374,7 +425,7 @@ export default {
         this.notify({
           text: productResponse.message,
           duration: 4000,
-          progress: false,
+          progress: true,
           type: "WARNING",
         });
         return;
@@ -384,7 +435,7 @@ export default {
         text: "Produit créé",
         duration: 3000,
         type: "SUCCESS",
-        progress: false,
+        progress: true,
       });
       this.modalIsVisible = false;
       this.refreshProducts();
@@ -431,7 +482,7 @@ export default {
         this.notify({
           text: "Aucune modification apporté au produit",
           duration: 4000,
-          progress: false,
+          progress: true,
           type: "WARNING",
         });
         return;
@@ -445,7 +496,7 @@ export default {
         this.notify({
           text: productResponse.message,
           duration: 4000,
-          progress: false,
+          progress: true,
           type: "WARNING",
         });
         return;
@@ -455,12 +506,41 @@ export default {
         text: "Produit mis à jour",
         duration: 3000,
         type: "SUCCESS",
-        progress: false,
+        progress: true,
       });
       this.modalIsVisible = false;
       this.refreshProducts();
     },
+    async deleteProduct() {
+      this.showMenu = false
+      const notificationId = this.notify({
+        text: "Suppression de produit",
+        duration: 400000,
+        progress: false,
+        type: "INFO",
+      });
+      const deletionResponse = await this.$Controller.deleteProduct(
+        this.modalData.productUuid
+      );
+      this.destroyNotification(notificationId)
+      if (!deletionResponse.success) {
+        this.notify({
+          text: deletionResponse.message,
+          duration: 4000,
+          progress: true,
+          type: "WARNING",
+        });
+        return;
+      }
 
+      this.refreshProducts();
+      this.notify({
+        text: "Produit supprimé",
+        duration: 3000,
+        type: "SUCCESS",
+        progress: true,
+      });
+    },
     pictureChange(event) {
       this.modalData.productPicture = event.target.files[0];
     },
@@ -483,7 +563,7 @@ export default {
           this.notify({
             text: "Désolé, mais vous ne pouvez créer qu'une seul boutique pour le moment",
             duration: 4000,
-            progress: false,
+            progress: true,
             type: "WARNING",
           });
           this.$router.replace({ query: null });
@@ -508,9 +588,11 @@ export default {
   margin-top: 100px;
   margin-bottom: 20px;
 }
+
 .logo img {
   width: 100px;
 }
+
 .bar {
   margin: 0 auto;
   width: 90%;
@@ -518,13 +600,16 @@ export default {
   border-radius: 30px;
   border: 1px solid #dcdcdc;
 }
+
 .bar:hover {
   box-shadow: 1px 1px 8px 1px #dcdcdc;
 }
+
 .bar:focus-within {
   box-shadow: 1px 1px 8px 1px #dcdcdc;
   outline: none;
 }
+
 .searchbar {
   height: 45px;
   border: none;
@@ -532,6 +617,7 @@ export default {
   font-size: 16px;
   outline: none;
 }
+
 .subtitle {
   color: var(--blue-gray-5);
   width: 70%;
@@ -553,12 +639,13 @@ export default {
   width: 100vw;
   top: 0px;
 }
+
 .modalContainer.visible {
   opacity: 1;
   pointer-events: auto;
 }
+
 .overlay {
-  display: none;
   width: calc(100%);
   height: 100vh;
   position: fixed;
@@ -566,6 +653,11 @@ export default {
   left: 0;
   z-index: -1;
 }
+
+.modalContainer.visible .overlay {
+  display: none;
+}
+
 .modalContainer.visible .overlay {
   display: inline-block;
 }
@@ -593,6 +685,7 @@ export default {
   position: relative;
   margin: 0 0 50px;
 }
+
 .form-group label {
   font-weight: 100;
   font-size: 20px;
@@ -628,23 +721,23 @@ export default {
   transition: all 0.5s;
 }
 
-.form-group input:not(:placeholder-shown) ~ label,
-.form-group textarea:not(:placeholder-shown) ~ label {
+.form-group input:not(:placeholder-shown)~label,
+.form-group textarea:not(:placeholder-shown)~label {
   font-size: 12px;
   top: -15px;
   left: 10px;
 }
 
-.form-group input:focus ~ label,
-.form-group select:focus ~ label,
-.form-group textarea:focus ~ label {
+.form-group input:focus~label,
+.form-group select:focus~label,
+.form-group textarea:focus~label {
   color: var(--blue-normal);
   font-size: 12px;
   top: -15px;
   left: 10px;
 }
 
-.form-group select:valid ~ label {
+.form-group select:valid~label {
   font-size: 12px;
   top: -15px;
   left: 10px;
@@ -661,8 +754,8 @@ export default {
   border-color: hsl(0, 76%, 50%);
 }
 
-.form-group input:invalid:not(:placeholder-shown) ~ label,
-.form-group textarea:invalid:not(:placeholder-shown) ~ label {
+.form-group input:invalid:not(:placeholder-shown)~label,
+.form-group textarea:invalid:not(:placeholder-shown)~label {
   color: hsl(0, 76%, 50%);
 }
 
@@ -682,16 +775,86 @@ export default {
   position: relative;
   top: 15px;
 }
+
 .small {
   font-size: 14px;
   color: var(--blue-white-5);
 }
+
 @keyframes rotation {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(359deg);
+  }
+}
+</style>
+
+<style scoped>
+body {
+  font-family: "Roboto", san-serif;
+}
+
+.center {
+  text-align: center;
+}
+
+.menu {
+  width: 120px;
+  z-index: 1;
+  box-shadow: 0 4px 5px 3px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  transition: 0.2s display ease-in;
+  background-color: white;
+}
+
+.menu .menu-options {
+  list-style: none;
+  padding: 0;
+  z-index: 1;
+  margin-bottom: 0;
+}
+
+.menu .menu-options .menu-option {
+  font-weight: 500;
+  z-index: 1;
+  font-size: 14px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.menu .menu-options .menu-option:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+button {
+  background: grey;
+  border: none;
+}
+
+button .next {
+  color: green;
+}
+
+button[disabled=false]:hover .next {
+  color: red;
+  animation: move 0.5s;
+  animation-iteration-count: 2;
+}
+
+@keyframes move {
+  from {
+    transform: translate(0%);
+  }
+
+  50% {
+    transform: translate(-40%);
+  }
+
+  to {
+    transform: transform(0%);
   }
 }
 </style>

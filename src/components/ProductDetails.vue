@@ -25,7 +25,7 @@
           </span>
         </div>
       </div>
-      <div class="desktopProductImageContainer d-none d-lg-flex col-6" >
+      <div class="desktopProductImageContainer d-none d-lg-flex col-6">
         <div class="img-zoom-container my-auto">
           <img id="imageToZoom" class="desktopPic m-auto"
             :src="'https://ik.imagekit.io/whynot/' + pictureToDisplay.path" :alt="productData.name" />
@@ -56,11 +56,12 @@
 
             <span class="float-left pr-3 grayText">★★★★★</span>
             <span style="width: 190px" class="grayText">
-              {{productData.marketName}}</span>
-            <h4 class="grayText d-none" >{{ productData.category }}</h4>
+              {{ productData.marketName }}</span> <br />
+            <span class="float-left pr-3 grayText"> {{ productData.marketPositionDescription }} </span>
+            <h4 class="grayText d-none">{{ productData.category }}</h4>
             <h4 class="title">{{ productData.price }} FCFA</h4>
             <br /><br /><br />
-            <button class="ctaBtn whatsappCta" @clicko="sendWhatsapp()">
+            <button class="ctaBtn whatsappCta" @click="sendWhatsapp(productData.whatsappNumber || 'noNum')">
               <span class="material-icons material-icons-round notranslate me-2" style="position: relative; top: 6px">
                 whatsapp
               </span>
@@ -120,7 +121,8 @@
       </div>
     </div>
   </div>
-    <div class="h-100 w-100 fixed-top position-fixed" style="z-index:5000" v-if="showChoosingNum" @click="showChoosingNum = false"></div>
+  <div class="h-100 w-100 fixed-top position-fixed" style="z-index:5000" v-if="showChoosingNum"
+    @click="showChoosingNum = false"></div>
   <div class="chooseRecipientPhoneNumber d-flex" v-if="showChoosingNum">
     <div class="m-auto">
       <div class=" w-100 d-flex">
@@ -198,6 +200,15 @@ export default {
     sendWhatsapp(recipientPhone) {
       if (this.$Commons.isEmpty(recipientPhone)) {
         this.showChoosingNum = true
+        return
+      }
+      if (/noNum/i.test(recipientPhone)) {
+        this.notify({
+          text: "Aucun numéro whatsapp n'a été ajouté à ce produit",
+          duration: 4000,
+          progress: false,
+          type: "INFO",
+        });
         return
       }
       this.showChoosingNum = false

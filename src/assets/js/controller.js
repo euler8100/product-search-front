@@ -6,6 +6,7 @@ const { getProductsByMarket } = require("./use-cases/getProductsByMarket.js");
 const { getMarketsByUser } = require("./use-cases/getMarketsByUser.js");
 const { createProduct } = require("./use-cases/createProduct.js");
 const { createMarket } = require("./use-cases/createMarket.js");
+const { deleteProduct } = require("./use-cases/deleteProduct.js");
 
 class Controller {
   static login(connectionId, password) {
@@ -31,6 +32,9 @@ class Controller {
   }
   static createMarket(marketData) {
     return createMarket(marketData);
+  }
+  static deleteProduct(marketData) {
+    return deleteProduct(marketData);
   }
 }
 

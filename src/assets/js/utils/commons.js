@@ -136,8 +136,9 @@ function cookieExists(cname) {
 
 // const devServerUrl = "https://guangzhou-api.herokuapp.com";
 // const devServerUrl = "https://3ef6-156-0-214-6.ngrok.io";
-const devServerUrl = "https://monster-search-api.herokuapp.com";
-const liveServerUrl = "https://monster-search-api.herokuapp.com";
+// const devServerUrl = "https://monster-search-api.herokuapp.com";
+const devServerUrl = "http://localhost:3000";
+const liveServerUrl = "https://monster-search-live-api.herokuapp.com";
 
 const devEmailReceiver = "dougbeeuler@gmail.com";
 const liveEmailReceiver = "dougbeeuler@gmail.com";
