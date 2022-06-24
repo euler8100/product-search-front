@@ -1,5 +1,5 @@
 <template>
-  <div class="signup container  col-sm-8 mx-auto">
+  <div class="signup container col-sm-8 mx-auto">
     <h1 class="title fs-5">Créez un nouveau compte</h1>
     <form @submit.prevent="signup" class="mt-4">
       <div class="row mb-2">
@@ -25,6 +25,19 @@
                 placeholder=" "
               />
               <label class="label"> Id de Connexion </label>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="form-group mb-3 mb-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                required
+                v-model="subscriptionCode"
+                placeholder=" "
+              />
+              <label class="label"> Code d'inscription </label>
             </div>
           </div>
 
@@ -80,6 +93,7 @@ export default {
       password: "",
       logingIn: false,
       loginStatusMessege: "",
+      subscriptionCode: "",
     };
   },
   async mounted() {
